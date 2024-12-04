@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chess model</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='model.css') }}" />
+</head>
+<body>
+    <div class="container">
+        <form method="POST" action="/predict" id="main-form">
+            {{ form.csrf_token }}
+            <label>Имя дебюта:</label>
+            {{ form.opening_name }}
+            <label>Игра рейтинговая</label>
+            {{ form.rated }}
+            <label>Количество ходов</label>
+            {{ form.turns }}
+            <label>Победа по причине</label>
+            {{ form.victory_status }}
+            <label>Тип игры</label>
+            {{ form.increment_code }}
+            <label>Рейтинг белых</label>
+            {{ form.whiteRating }}
+            <label>Рейтинг черных</label>
+            {{ form.blackRating }}
+            <input type="submit" value="Результат">
+
+            {{ prediction }}
+        </form>
+        <div id="image"></div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+#main-form {
+    display: flex;
+    flex-direction: column;
+    width: 50rem;
+}
+
+#main-form > * {
+    margin: 0 0 5px 5px;
+}
+
+#image {
+    float: right;
+    width: 280px;
+    height: 280px;
+    background-image: url("img.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position-x: right;
+    background-position-y: center;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+}
