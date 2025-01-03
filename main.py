@@ -8,6 +8,7 @@ import joblib
 import pandas as pd
 import sklearn as sklearn
 import xgboost as xgb
+import requests
 
 debut_names = []
 increment_codes = []
@@ -119,31 +120,31 @@ def predict():
         else:
             input_data['rated'] = 0
 
-        # if input_data['victory_status'] == 'Вышло время':
-        #     input_data['victory_status'] = 'outoftime'
-        # elif input_data['victory_status'] == 'Мат':
-        #     input_data['victory_status'] = 'mate'
-        # elif input_data['victory_status'] == 'Противник сдался':
-        #     input_data['victory_status'] = 'resign'
-        # elif input_data['victory_status'] == 'Ничья':
-        #     input_data['victory_status'] = 'draw'
 
-        # Предобработка данных
-        input_df = pd.DataFrame([input_data])  # Преобразуем в DataFrame
+        # # Предобработка данных
+        # input_df = pd.DataFrame([input_data])  # Преобразуем в DataFrame
+        #
+        # # Кодирование категориальных данных
+        # for col, categories in encoders.items():
+        #     if col in input_df:
+        #         input_df[col] = pd.Categorical(input_df[col], categories=categories).codes
+        #
+        # # Убедимся, что все нужные признаки присутствуют
+        # input_df = input_df.reindex(columns=features)
+        #
+        # # Предсказание
+        # prediction = model_chess.predict(input_df)
 
-        # Кодирование категориальных данных
-        for col, categories in encoders.items():
-            if col in input_df:
-                input_df[col] = pd.Categorical(input_df[col], categories=categories).codes
+        # # Преобразуем результат предсказания в удобный формат
+        # prediction_label = 'Победа белых' if prediction[0] == 1 else 'Победа черных'
 
-        # Убедимся, что все нужные признаки присутствуют
-        input_df = input_df.reindex(columns=features)
+        response = requests.post('http://node-server:3001/predict', json=input_data)
+        prediction_label = response.json().get('prediction')
 
-        # Предсказание
-        prediction = model_chess.predict(input_df)
-
-        # Преобразуем результат предсказания в удобный формат
-        prediction_label = 'Победа белых' if prediction[0] == 1 else 'Победа черных'
+        if prediction_label == 'Black':
+            prediction_label = 'Победа черных'
+        else:
+            prediction_label = 'Победа белых'
 
         # Вернем результат предсказания
         return render_template('model.html', form=form, prediction=prediction_label)

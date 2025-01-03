@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-app
+  labels:
+    app: flask-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-app
+  template:
+    metadata:
+      labels:
+        app: flask-app
+    spec:
+      containers:
+      - name: flask-app
+        image: flaskapp-flask-app:latest  # Replace with your built image
+        ports:
+        - containerPort: 3000
+        volumeMounts:
+        - name: models-volume
+          mountPath: /app/models
+        - name: debut-names-volume
+          mountPath: /app/ИменаДебютов.txt
+          subPath: ИменаДебютов.txt
+        - name: increment-code-volume
+          mountPath: /app/инкеременткод.txt
+          subPath: инкеременткод.txt
+      volumes:
+      - name: models-volume
+        hostPath:
+          path: ./models  # Path relative to the Kubernetes host
+          type: Directory
+      - name: debut-names-volume
+        hostPath:
+          path: ./ИменаДебютов.txt  # Path relative to the Kubernetes host
+          type: File
+      - name: increment-code-volume
+        hostPath:
+          path: ./инкеременткод.txt  # Path relative to the Kubernetes host
+          type: File

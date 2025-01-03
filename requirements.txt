@@ -1,0 +1,10 @@
+Flask
+Flask-WTF
+pandas
+numpy
+joblib
+scikit-learn
+xgboost
+Werkzeug
+cryptography
+requests

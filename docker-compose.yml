@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  flask-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./models:/app/models
+      - ./ИменаДебютов.txt:/app/ИменаДебютов.txt
+      - ./инкеременткод.txt:/app/инкеременткод.txt
+    ports:
+      - "3000:3000"
+    depends_on:
+      - node-server
+    networks:
+      - app-network
+
+  node-server:
+    build:
+      context: ./NodeJsServerApp
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
